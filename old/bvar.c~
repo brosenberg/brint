@@ -1,0 +1,55 @@
+#include <string.h>
+#include <stdio.h>
+#include "bvar.h"
+#include "bmisc.h"
+
+size_t btype_sizeof(btype t) {
+    size_t retval;
+    switch (t) {
+        case BINT: retval=sizeof(int); break;
+        case BFLOAT: retval=sizeof(float); break;
+        case BDOUBLE: retval=sizeof(double); break;
+        case BCHAR: retval=sizeof(char); break;
+        case BSTRING: retval=sizeof(char*); break;
+        default: retval=sizeof(void*); 
+    }
+    return retval;
+}
+
+void bvar_assign( struct bvar *var, char *value, btype type ) {
+    if ( var->value != NULL )
+        xfree(var->value);
+    var->value = xmalloc(sizeof((strlen(value)+1)*sizeof(char)));
+    *var->value = value;
+    var->type = type;
+}
+/* Returns a string version of the variable */
+/*
+char* bvar_tostring( struct bvar *var ) {
+    char* retval = (char*) malloc(sizeof(char*));
+    switch ( var->type ) {
+        case BPTR:
+            snprintf(retval,sizeof(retval),"");
+            break;
+        case BPTR:
+            snprintf(retval,sizeof(retval),"");
+            break;
+        case BPTR:
+            snprintf(retval,sizeof(retval),"");
+            break;
+        case BPTR:
+            snprintf(retval,sizeof(retval),"");
+            break;
+        case BPTR:
+            snprintf(retval,sizeof(retval),"");
+            break;
+        case BPTR:
+            snprintf(retval,sizeof(retval),"");
+            break;
+}
+*/
+/* Returns as an int. Floats, doubles, chars are translated to int and strings are 0 */
+int bvar_toint( struct bvar *var );
+/* Returns a float. */
+float bvar_tofloat( struct bvar *var );
+

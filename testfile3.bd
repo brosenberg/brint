@@ -1,0 +1,15 @@
+#!/Users/ben/brint/brint
+
+print 'Test\'' ;
+
+  5 + 4 ;
+5*4;
+#f@s%d;
+
+# Comment!
+98*32; # Inline comment!
+261-19; #Comment
+261*19; #Comment
+1355-246;# Another comment
+1355*246;# Another comment
+print 9+8-7+6;

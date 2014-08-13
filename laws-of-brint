@@ -1,0 +1,4 @@
+The Laws of Brint Internals
+0. Every function containing any form of memory allocation (malloc, calloc, etc.) must have a counterpart function that will free that memory. (ex: bdeque_create and bdeque_destroy)
+1. Every b(SUFFIX) datatype must have a create, destroy and assign function.
+2. A function should only accomplish one task. If it performs more than one task, unless absolutely necessary, the function should be broken up into separate functions for each task.

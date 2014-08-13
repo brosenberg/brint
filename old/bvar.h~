@@ -1,0 +1,19 @@
+#include <stdlib.h>
+#define btype unsigned char
+#define BPTR    0
+#define BINT    1
+#define BFLOAT  2
+#define BDOUBLE 4
+#define BCHAR   8
+#define BSTRING 16
+
+struct bvar {
+    char **value; 
+    btype type;
+};
+
+void bvar_assign( struct bvar *var, char *value, btype type );
+/* Returns as an int. Floats, doubles, chars are translated to int and strings are 0 */
+int bvar_toint( struct bvar *var );
+/* Returns a float. */
+float bvar_tofloat( struct bvar *var );

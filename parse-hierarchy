@@ -1,0 +1,9 @@
+          _
+         /      Raw Text
+Parse ---|      Translation
+         |      Break by operators
+         \_     Break by control structure
+Compute ___     Follow control structure
+                Resolve expressions
+                Go back to control structures
+                    

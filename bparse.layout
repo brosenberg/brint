@@ -1,0 +1,12 @@
+node = deque->head;
+last_new_node; // 
+while ( node != NULL ) {
+    // Check to see if current node is an operator
+    if ( is_def(*node->var->value) != -1 ) {
+        // Do operator magic
+    } else if ( is_def(*node->next->var->value) != -1 ) {
+        // Do operator magic
+    } else {
+        fprintf(stderr,"Syntax error: Need an operator between %s and %s\n",*node->var->value,*node->next->var->value);
+    }
+}

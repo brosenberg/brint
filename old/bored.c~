@@ -1,0 +1,97 @@
+#include "bored.h"
+#include "bparse.h"
+
+/* Tests various aspects of bdeques */
+void testroutine ( void ) {
+    struct bdeque *newdeque = bdeque_create(),
+                  *dupdeque;
+    printf("DEBUG: Loading deque...\n");
+    bdeque_push( newdeque, "bar" );
+    bdeque_push( newdeque, "baz" );
+    bdeque_unshift( newdeque, "foo" );
+    bdeque_push( newdeque, "abc" );
+    bdeque_unshift( newdeque, "BEGIN" );
+    bdeque_unshift( newdeque, "END" );
+    bdeque_push( newdeque, "def" );
+    bdeque_push( newdeque, "ghi" );
+    bdeque_push( newdeque, "jkl" );
+    printf("DEBUG: Printing deque forwards and backwards...\n");
+    bdeque_print( newdeque );
+    bdeque_rprint( newdeque );
+    printf("DEBUG: Counting deque forwards and backwards...\n");
+    printf("%d\n",bdeque_count( newdeque ));
+    printf("%d\n",bdeque_rcount( newdeque ));
+    printf("DEBUG: Popping deque...\n");
+    while ( bdeque_count( newdeque ) != 0 )
+        printf("%s\n",*bdeque_npop( newdeque )->var->value);
+    printf("DEBUG: Printing deque forwards and backwards...\n");
+    bdeque_print( newdeque );
+    bdeque_rprint( newdeque );
+    printf("DEBUG: Counting deque forwards and backwards...\n");
+    printf("%d\n",bdeque_count( newdeque )); 
+    printf("%d\n",bdeque_rcount( newdeque ));
+    printf("DEBUG: Loading deque...\n");
+    bdeque_push( newdeque, "bar" );
+    bdeque_push( newdeque, "baz" );
+    bdeque_unshift( newdeque, "foo" );
+    bdeque_push( newdeque, "abc" );
+    bdeque_unshift( newdeque, "BEGIN" );
+    bdeque_unshift( newdeque, "END" );
+    bdeque_push( newdeque, "def" );
+    bdeque_push( newdeque, "ghi" );
+    bdeque_push( newdeque, "jkl" );
+    printf("DEBUG: Counting deque forwards and backwards...\n");
+    printf("%d\n",bdeque_count( newdeque ));
+    printf("%d\n",bdeque_rcount( newdeque ));
+    printf("DEBUG: Duplicating the deque...\n");
+    dupdeque = bdeque_dup( newdeque );
+    printf("DEBUG: Print dup'd deque forwards and backwards...\n");
+    bdeque_print( dupdeque );
+    bdeque_rprint( dupdeque );
+    printf("DEBUG: Destroying dup'd deque...\n");
+    bdeque_destroy( dupdeque );
+    printf("DEBUG: Clearing deque...\n");
+    bdeque_clear( newdeque );
+    printf("DEBUG: Counting deque forwards and backwards...\n");
+    printf("%d\n",bdeque_count( newdeque ));
+    printf("%d\n",bdeque_rcount( newdeque ));
+    printf("DEBUG: Destroying deque...\n");
+    bdeque_destroy( newdeque );
+}
+
+int main ( int argc, char **argv ) {
+    /*
+    FILE *infile;
+    struct bdeque* bd = bdeque_create();
+    if ( argc < 2 ) {
+        fprintf(stderr,"Error: Please specify a source file\n");
+        return 1;
+    }
+    if ( ( infile = fopen(argv[1], "r") ) == NULL ) {
+        fprintf(stderr,"Error: Can not read from file: %s\n",argv[1]);
+        return 1;
+    }
+    bd = read_code_block( infile );
+    bdeque_print(bd);
+
+    fclose( infile );
+
+    */
+    /* 
+    struct bvar *testvar = xmalloc(sizeof(testvar));
+    struct bvar testvar;
+    long *foo = (int*) xmalloc(sizeof(int));
+    *foo = 8;
+    */
+    /*
+    char **a = (char**) xmalloc(sizeof(char**));
+    *a = "Hello!";
+    testvar->value = (int*) a;
+    printf("%s\n",*((char**)testvar->value)); 
+    */
+    /* printf("%s\n",(char*)(*testvar.value)); */
+    testroutine();
+    return 0;
+}
+
+

@@ -1,0 +1,3 @@
+all:
+	gcc -std=c99 -Wall -Wextra -pedantic bmisc.c bio.c bvar.c bdeque.c bparse.c bored.c -o BoredI
+	gcc -std=c99 -Wall -Wextra -pedantic bmisc.c bio.c bvar.c bdeque.c bparse.c interp.c -o brint

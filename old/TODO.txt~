@@ -1,0 +1,21 @@
+* Make a Remove whitespace function - DONE
+
+bmath:
+    Make bint type
+    Make bint math stuff
+        Strassen Algorithm using a Z-curve
+
+bdeque:
+    Have bdeques keep track of their length
+    `-> This will allow d_elem's to contain NULL
+    * Change d_elem values from chars to bvars - DONE
+    write bdeque_concat
+    fix bdeque_copy
+    make fast sorting bdeques that are doubly linked skip lists
+
+Future features:
+    Implicit and explicit parallelism
+    pure functions
+    Memoization for pure functions
+
+    skip lists?

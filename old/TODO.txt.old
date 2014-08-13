@@ -1,0 +1,23 @@
+bparse:
+    Rewrite tokenization function
+        It doesn't entirely work right now. Long variable names and lines that don't end in a 'define'd token aren't properly stored.
+    Collapse tokens when processing
+
+    When reading a line of tokens, copy one token at a time into a new deque. Parse each token as it comes in, decide if there is an operation to perform, if there is do it, else go on to the next token. When the end of the deque is reached, keep parsing over the duplicated list until it is done.
+    Should define what 'done' means.
+
+bdeque:
+    * Have bdeques keep track of their length - DONE
+    * Change d_elem values from chars to bvars - DONE
+    write bdeque_concat
+    fix bdeque_copy
+    write bdeque_sort
+    make fast sorting bdeques that are doubly linked skip lists
+
+Future features:
+    Implicit and explicit parallelism
+    pure functions
+        Pure functions can be implicitly parallelized due to not relying on outside variables
+    Memoization for pure functions
+
+* Make a Remove whitespace function - DONE

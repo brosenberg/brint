@@ -1,0 +1,11 @@
+#!/Users/ben/bored/BoredInterpreter
+
+var=5+4;
+
+# Comment!
+while ( var > 9 ) {
+    var=var<<2; # Inline comment!
+    var=var-10; #Comment
+}
+
+

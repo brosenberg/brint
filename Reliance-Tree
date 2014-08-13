@@ -1,0 +1,10 @@
+Requires:
+
+bbase: -none-
+bio: bbase
+bvar: bbase
+bdeque: bbase bvar
+bops: bbase bdeque
+bfunc: bbase bdeque
+bparse: bbase bdef bops bio (bfunc)
+brint: bbase bparse

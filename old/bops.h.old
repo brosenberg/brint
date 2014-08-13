@@ -1,0 +1,22 @@
+#include "bdeque.h"
+
+struct b_op {
+    char *name;
+    struct d_elem (*op)();
+};
+
+/* Adds a and b */
+void b_ADD( struct d_elem a, struct d_elem b, struct d_elem c );
+void b_SUB( struct d_elem a, struct d_elem b, struct d_elem c );
+void b_MULT( struct d_elem a, struct d_elem b, struct d_elem c );
+/* Bitshift a left by b */
+void b_SHIFTL( struct d_elem a, struct d_elem b, struct d_elem c );
+/* Bitshift a right by b */
+void b_SHIFTR( struct d_elem a, struct d_elem b, struct d_elem c );
+/* Greater than */
+void b_GT( struct d_elem a, struct d_elem b, struct d_elem c );
+/* Less than */
+void b_LT( struct d_elem a, struct d_elem b, struct d_elem c );
+void b_EQUAL( struct d_elem a, struct d_elem b, struct d_elem c );
+/* Assign the value of b to a */
+void b_ASSIGN( struct d_elem a, struct d_elem b, struct d_elem c );

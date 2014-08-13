@@ -1,0 +1,101 @@
+#include "bparse.h"
+#include "bdef.h"
+#include "bmisc.h"
+#define LINESIZE 128
+
+int is_def( char *in ) {
+    unsigned int i;
+    int retval=0;
+    for ( i=0; i < sizeof(def_table)/sizeof(*def_table); i++ ) {
+        if ( strncmp( in, def_table[i], sizeof(in) ) == 0 ) {
+            retval = 1;
+            break;
+        }
+    }
+    return retval;
+}
+
+int check_syntax( FILE *FH );
+
+int check_block_syntax ( struct bdeque* block );
+
+ /* remove characters in *c from *s and returns the result */
+char *b_strcrm( char *s, char *c ) {
+    unsigned int i,j,k=0;
+    size_t slen = strlen(s), clen = strlen(c);
+    char *retval = xmalloc(slen+1);
+    /* Check each character in s against each char of c.
+        If a char in c matches one in s, go to the next char is s.
+        If the char doesn't match and we just checked the last char in c, then
+        there isn't a match and we append it to the return value. */
+    for ( i=0; i<slen; i++ )
+        for ( j=0; j<clen; j++ ) {
+            if ( s[i] == c[j] )
+                break;
+            else if ( j==clen-1 )
+                retval[k++] = s[i];
+        }   
+    return retval;
+}
+
+
+/* Reads a block of code and returns the code deque for that block */
+/* FIXME: Don't use fgetc, use fgets and pop the chars off that */
+struct bdeque* read_code_block ( FILE *FH ) {
+    struct bdeque* retval = bdeque_create();
+    size_t size = 1;
+    char c, 
+         *string = xmalloc(sizeof(char));
+    while ( !feof(FH) ) {
+        char *cs = xmalloc(sizeof(*cs));
+        c = fgetc(FH);
+        snprintf(cs, sizeof(cs), "%c", c);
+        if ( ! is_def(cs) ) {
+            size++;
+            char *tmp = xrealloc( string, sizeof(char)*size );
+            string = tmp;
+            snprintf( string, sizeof(char)*size, "%s%c",string,c);
+        } else {
+            char *tmp = xrealloc( string, sizeof(char) );
+            size = 1;
+            if ( strcmp(string,"") != 0 )
+                bdeque_push(retval, string);
+            bdeque_push(retval, cs);
+            string = tmp;
+            strncpy( string, "", sizeof(char)*size );
+        }
+    }
+    /* bdeque_print( retval ); */
+    return retval;    
+}
+
+/* Reads a block of code and returns the code deque for that block */
+/* FIXME: Don't use fgetc, use fgets and pop the chars off that */
+struct bdeque* read_code_block2 ( FILE *FH ) {
+    struct bdeque* retval = bdeque_create();
+    size_t size = 1;
+    char c, 
+         *string = xmalloc(sizeof(char)*5);
+    while ( !feof(FH) ) {
+        char *cs = xmalloc(sizeof(*cs));
+        c = fgetc(FH);
+        snprintf(cs, sizeof(cs), "%c", c);
+        if ( ! is_def(cs) ) {
+            size++;
+            char *tmp = xrealloc( string, sizeof(char)*size );
+            string = tmp;
+            snprintf( string, sizeof(char)*size, "%s%c",string,c);
+        } else {
+            char *tmp = xrealloc( string, sizeof(char) );
+            size = 1;
+            if ( strcmp(string,"") != 0 )
+                bdeque_push(retval, string);
+            bdeque_push(retval, cs);
+            string = tmp;
+            strncpy( string, "", sizeof(char)*size );
+        }
+    }
+    /* bdeque_print( retval ); */
+    return retval;    
+}
+

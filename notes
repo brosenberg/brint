@@ -1,0 +1,1 @@
+Currently writing return value of Operations in bparse into *retnode. Need to make that work. Probably rewrite that block. Need to determine a better way to go through each line. Probably read from original deque for the line and load a new deque with each value, evaluating operators as they come.

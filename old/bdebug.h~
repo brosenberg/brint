@@ -1,0 +1,1 @@
+#define WHEREAMI() printf("In %s\n",__func__)

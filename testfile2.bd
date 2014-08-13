@@ -1,0 +1,11 @@
+#!/Users/ben/brint/brint
+
+var=5+4;
+
+# Comment!
+while ( var > 6 ) {
+    var=var<<2; # Inline comment!
+    var=var-10; #Comment
+}
+
+

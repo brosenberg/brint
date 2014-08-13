@@ -1,0 +1,200 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "bdeque.h"
+#include "bmisc.h"
+
+/* returns the number of elements in the deque */
+int bdeque_count( struct bdeque* deque ) {
+    struct d_elem *current = deque->head;
+    int count = 0;
+    while ( current != NULL ) {
+        current = current->next;
+        count++;
+    }
+    return count;
+}
+
+/* counts from tail to head */
+int bdeque_rcount( struct bdeque* deque ) {
+    struct d_elem *current = deque->tail;
+    int count = 0;
+    while ( current != NULL ) {
+        current = current->prev;
+        count++;
+    }
+    return count;
+}
+
+/* create a new deque and return a pointer to the deque */
+struct bdeque* bdeque_create( void ) {
+    struct bdeque *newdeque = xmalloc(sizeof(*newdeque));
+    newdeque->head = NULL;
+    newdeque->tail = NULL;
+    return newdeque;
+}
+
+/* duplicates the given deque and returns in */
+struct bdeque* bdeque_dup( struct bdeque* deque ) {
+    struct bdeque *newdeque = xmalloc(sizeof(*newdeque));
+    struct d_elem *current = deque->head,
+                  *last = NULL,
+                  *new = d_elem_new();
+    /*
+    *(new->var) = *(current->var);
+    new->prev = last;
+    last = new;
+    newdeque->head=new;
+    current = current->next;
+    */
+    while ( current != NULL ) {
+        *(new->var) = *(current->var);
+       // *new.var = *current.var;
+        new->prev = last;
+        last->next = new;
+        last = new;   
+        current = current->next;
+    }
+    newdeque->tail=last;
+    /*fprintf(stderr,"Do not use bdeque_copy. It is not properly implemented yet!\n");*/
+    return newdeque;
+}
+
+/* deletes a deque and all of its' elements */
+void bdeque_destroy( struct bdeque* deque ) {
+    struct d_elem *current = deque->head, *next;
+    while ( current != NULL ) {
+        next = current->next;
+        xfree( current->var );
+        xfree( current );
+        current = next;
+    }
+    xfree( deque );
+    /* deque = NULL; */
+}
+
+/* remove all elements from the deque */
+void bdeque_clear( struct bdeque* deque ) {
+    struct d_elem *current = deque->head, *next;
+    while ( current != NULL ) {
+        next = current->next;
+        xfree( current->var );
+        xfree( current );
+        current = next;
+    }
+    deque->head=NULL;
+    deque->tail=NULL;
+}
+
+/* pushes a element onto the end of the deque */
+void bdeque_npush( struct bdeque* deque, struct d_elem* newelem ) {
+    newelem->next = NULL;
+    newelem->prev = deque->tail;
+    if ( deque->tail != NULL )
+        deque->tail->next = newelem;
+    deque->tail = newelem;
+    if ( deque->head == NULL )
+        deque->head = newelem;
+}
+
+/* pushes a element onto the end of the deque */
+void bdeque_nunshift( struct bdeque* deque, struct d_elem* newelem ) {
+    newelem->next = deque->head;
+    newelem->prev = NULL;
+    if ( deque->head != NULL )
+        deque->head->prev = newelem;
+    deque->head = newelem;
+    if ( deque->tail == NULL )
+        deque->tail = newelem;
+}
+
+/* inserts a element at a given location
+    If the location specified is greater than the length of the list, the element is appended to the list
+    FIXME: This might not work yet
+*/
+void bdeque_ninsert( struct bdeque* deque, struct d_elem* newelem, unsigned int pos ) {
+    struct d_elem *current = deque->head;
+    unsigned int count = 0;
+    while ( current->next != NULL && count != pos ) {
+        current = current->next;
+        count++;
+    }
+    newelem->prev = current;
+    newelem->next = current->next;
+    if ( current->next != NULL )
+        current->next->prev = newelem;
+    current->next = newelem;
+}
+
+/* pops a element off the end of the deque and returns it*/
+struct d_elem* bdeque_npop( struct bdeque* deque ) {
+    struct d_elem *retval = deque->tail;
+    if ( retval != NULL ) {
+        deque->tail = retval->prev;
+        if ( deque->tail != NULL )
+            deque->tail->next = NULL;
+        else
+            deque->head = NULL;
+    }
+    return retval;
+}
+
+/* shifts a element off the front of the deque and returns it*/
+struct d_elem* bdeque_nshift( struct bdeque* deque ) {
+    struct d_elem *retval = deque->head;
+    if ( retval != NULL) {
+        deque->head = retval->next;
+        if ( deque->head != NULL )
+            deque->head->prev = NULL;
+        else
+            deque->tail = NULL;
+            
+    }
+    return retval;
+}
+
+/* places a value onto the end of a deque */
+void bdeque_push( struct bdeque* deque, char* value ) {
+    struct d_elem *newelem = d_elem_new();
+    bvar_assign( newelem->var, value, BSTRING );
+    bdeque_npush( deque, newelem );
+}
+
+/* places a value onto the front of a deque */
+void bdeque_unshift( struct bdeque* deque, char* value ) {
+    struct d_elem *newelem = d_elem_new();
+    bvar_assign( newelem->var, value, BSTRING );
+    bdeque_nunshift( deque, newelem );
+}
+
+/* prints all of the elements in the deque */
+void bdeque_print( struct bdeque* deque ) {
+    struct d_elem *current = deque->head;
+    printf("{{ ");
+    while ( current != NULL ) {
+        printf("\"%s\" ",*current->var->value);
+        current = current->next;
+    }
+    printf(" }}\n");
+}
+
+/* prints all of the elements in the deque in reverse */
+void bdeque_rprint( struct bdeque* deque ) {
+    struct d_elem *current = deque->tail;
+    printf("{{ ");
+    while ( current != NULL ) {
+        printf("\"%s\" ",*current->var->value);
+        current = current->prev;
+    }
+    printf(" }}\n");
+}
+
+/* Create a new d_elem */
+struct d_elem* d_elem_new( void ) {
+    struct d_elem *newelem = xmalloc(sizeof(*newelem));
+    newelem->var = xmalloc(sizeof(*newelem->var));
+    newelem->var->value = xmalloc(sizeof(char**));
+    newelem->next = NULL;
+    newelem->prev = NULL;
+    return newelem;
+}
